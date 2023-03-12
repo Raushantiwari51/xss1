@@ -31,7 +31,8 @@
       const xhr = new XMLHttpRequest();
       xhr.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
-          document.getElementById('results').innerHTML = this.responseText;
+          document.getElementById('results').innerHTML = searchTerm;
+
         }
       };
       xhr.open("GET", `/search?q=${searchTerm}`, true);
@@ -48,5 +49,5 @@
   </form>
   <div id="results"></div>
 </body>
-
+  
 </html>
