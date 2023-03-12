@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>DOM-based XSS Lab</title>
+  <style>
+    input[type="text"] {
+      padding: 10px;
+      font-size: 16px;
+    }
+    input[type="submit"] {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #0077cc;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  </style>
+  <script>
+    const searchBox = document.getElementById('search');
+    const searchButton = document.querySelector('input[type="submit"]');
+
+    searchButton.addEventListener('click', () => {
+      const searchTerm = searchBox.value;
+      const xhr = new XMLHttpRequest();
+      xhr.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          document.getElementById('results').innerHTML = this.responseText;
+        }
+      };
+      xhr.open("GET", `/search?q=${searchTerm}`, true);
+      xhr.send();
+    });
+  </script>
+</head>
+<body>
+  <h1>DOM-based XSS Lab</h1>
+  <form>
+    <label for="search">Search:</label>
+    <input type="text" id="search" name="search">
+    <input type="submit" value="Search">
+  </form>
+  <div id="results"></div>
+</body>
+<?php
+  header("X-XSS-Protection: 1; mode=block");
+?>
+</html>
